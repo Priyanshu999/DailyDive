@@ -1,9 +1,10 @@
 from django.shortcuts import render
 
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, password_validation
 from django.contrib.auth.models import User
 from django.views.generic import CreateView, View, TemplateView
 from django.urls import reverse_lazy
+from django.core.exceptions import ValidationError
 
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
@@ -26,12 +27,22 @@ class SignupView(View):
             # Handle password mismatch error
             return render(request, self.template_name, {'error': 'Passwords do not match'})
 
+        # Use Django's built-in password validators
+        try:
+            password_validation.validate_password(password1, user=User, password_validators=[
+                password_validation.UserAttributeSimilarityValidator(),
+                password_validation.MinimumLengthValidator(),
+                password_validation.CommonPasswordValidator(),
+            ])
+        except ValidationError as e:
+            # Handle password validation errors
+            return render(request, self.template_name, {'error': e})
+
         # Create a new user
         user = User.objects.create_user(username=username, password=password1)
         login(request, user)  # Log the user in
 
-        return redirect('home')  # Redirect to the home page or any other desired page
-
+        return redirect('home') 
 
 class HomeView(TemplateView):
     template_name = 'home.html'
