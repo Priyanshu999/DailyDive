@@ -12,6 +12,7 @@ class NewsSource(models.Model):
 class NewsArticle(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
+    article_link = models.URLField(default="")
     image_url = models.URLField(null=True)  # URL to the small image for the article
     source = models.ForeignKey(NewsSource, on_delete=models.CASCADE)
     publication_date = models.DateTimeField()
