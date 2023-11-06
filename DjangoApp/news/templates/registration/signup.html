@@ -1,10 +1,13 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
+    <link rel="stylesheet" href="{% static 'css/news.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 </head>
 
 <body>
@@ -19,26 +22,26 @@
                         {% csrf_token %}
                         <!-- {{ form }} -->
                         <div class="form-group">
-                            <label for="username"><i class="zmdi zmdi-account material-icons-name"></i>Username:</label>
+                            <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
                             {{ form.username }}
                             {{ form.username.errors }}
                         </div>
                         <div class="form-group">
-                            <label for="email"><i class="zmdi zmdi-email"></i>Email address:</label>
+                            <label for="email"><i class="zmdi zmdi-email"></i></label>
                             {{ form.email }}
                             {{ form.email.errors }}
                         </div>
                         <div class="form-group">
-                            <label for="password1"><i class="zmdi zmdi-lock"></i>Password:</label>
+                            <label for="password1"><i class="zmdi zmdi-lock"></i></label>
                             {{ form.password1 }}
                             {{ form.password1.errors }}
                         </div>
                         <div class="form-group">
-                            <label for="password2"><i class="zmdi zmdi-lock-outline"></i>Password confirmation:</label>
+                            <label for="password2"><i class="zmdi zmdi-lock-outline"></i></label>
                             {{ form.password2 }}
                             {{ form.password2.errors }}
                         </div>
-                        
+
                         <div class="form-group">
                             <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" required />
                             <label for="agree-term" class="label-agree-term">
@@ -51,10 +54,15 @@
                         </div>
                     </form>
                 </div>
+                <div class="signup-image">
+                    <figure><img src="{% static 'images/signup-image.jpg' %}" alt="sing up image"></figure>
+                    <a href="#" class="signup-image-link">I am already member</a>
+                </div>
                 <!-- ... -->
             </div>
         </div>
     </section>
+    <script type="text/javascript" src="{% static 'js/news.js' %}"></script>
 </body>
 
 </html>
