@@ -24,5 +24,6 @@ urlpatterns = [
     path('', include('news.urls')),
     path('accounts/login/', views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('accounts/logout/', views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('verification/', include('verify_email.urls')),
 ]
 

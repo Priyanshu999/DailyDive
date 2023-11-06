@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "news",
+    "verify_email.apps.VerifyEmailConfig",
 ]
 
 MIDDLEWARE = [
@@ -86,6 +87,16 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'yourdailydive@gmail.com'
+EMAIL_HOST_PASSWORD = 'hofs cejf jxwu hqlt'
+
+DEFAULT_FROM_EMAIL = 'noreply <no_reply@domain.com>'
 
 
 # Password validation
