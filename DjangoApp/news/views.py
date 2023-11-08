@@ -1,6 +1,6 @@
 from django.views.generic.edit import FormView
 from .forms import CustomSignupForm
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 from django.db.models import F, Subquery, Window, Count, Max
 from django.contrib.auth import login
 from django.db.models.functions import Rank, DenseRank, TruncDate
@@ -62,5 +62,38 @@ class HomeView(ListView):
     
 
 
-class NewsDetailView(TemplateView):
-    template_name='news_detail.html'
+class NewsDetailView(DetailView):
+    model = NewsArticle
+    template_name = 'news_detail.html'
+    context_object_name = 'article'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Retrieve the original article object
+        article = context['article']
+
+        # Split the article content into paragraphs
+        paragraphs = article.content.split('.')
+
+        # Separate the first paragraph
+        first_paragraph = paragraphs[0]
+        
+        # Split the remaining content into two halves
+        remaining_content = paragraphs[1:]
+        half_length = len(remaining_content) // 2
+        first_half = remaining_content[:half_length]
+        second_half = remaining_content[half_length:]
+        first_half_content = ".".join(first_half) + "."
+        second_half_content = ".".join(second_half) + "."
+
+        # Create a custom context dictionary
+        custom_context = {
+            'article': article,
+            'first_paragraph': first_paragraph,
+            'first_half_content': first_half_content,
+            'second_half_content': second_half_content,
+        }
+
+        context.update(custom_context)
+        return context
