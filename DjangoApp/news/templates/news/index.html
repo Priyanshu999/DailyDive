@@ -130,71 +130,90 @@
     <div class="container-fluid paddding mb-5">
         <div class="row mx-0">
             <div class="col-md-6 col-12 paddding animate-box" data-animate-effect="fadeIn">
-                <div class="fh5co_suceefh5co_height"><img src="{% static 'images/nick-karvounis-78711.jpg' %}"
-                        alt="img" />
+                {% for article in page_obj %}
+                {# Check if this is the third object in the list (index 2) #}
+                {% if forloop.counter0 == 0 %}
+                <div class="fh5co_suceefh5co_height"><img src="{{ article.image_url }}" alt="img" />
                     <div class="fh5co_suceefh5co_height_position_absolute"></div>
                     <div class="fh5co_suceefh5co_height_position_absolute_font">
-                        <div class=""><a href="#" class="color_fff"> <i class="fa fa-clock-o"></i>&nbsp;&nbsp;Dec
-                                31,2017
+                        <div class=""><a href="#" class="color_fff"> <i class="fa fa-clock-o"></i>&nbsp;&nbsp;
+                                {{ article.publication_date }}
                             </a></div>
-                        <div class=""><a href="single.html" class="fh5co_good_font"> After all is said and done, more is
-                                said than done </a></div>
+                        <div class=""><a href="single.html" class="fh5co_good_font"> {{ article.title }} </a></div>
                     </div>
                 </div>
+                {% endif %}
+                {% endfor %}
             </div>
             <div class="col-md-6">
                 <div class="row">
+                    {% for article in page_obj %}
+                    {# Check if this is the third object in the list (index 2) #}
+                    {% if forloop.counter0 == 1 %}
                     <div class="col-md-6 col-6 paddding animate-box" data-animate-effect="fadeIn">
-                        <div class="fh5co_suceefh5co_height_2"><img src="{% static 'images/science-578x362.jpg' %}"
-                                alt="img" />
+                        <div class="fh5co_suceefh5co_height_2"><img src="{{ article.image_url }}" alt="img" />
                             <div class="fh5co_suceefh5co_height_position_absolute"></div>
                             <div class="fh5co_suceefh5co_height_position_absolute_font_2">
-                                <div class=""><a href="#" class="color_fff"> <i
-                                            class="fa fa-clock-o"></i>&nbsp;&nbsp;Oct
-                                        28,2017 </a></div>
-                                <div class=""><a href="single.html" class="fh5co_good_font_2"> After all is said and
-                                        done, <br>more is said than done </a></div>
+                                <div class=""><a href="#" class="color_fff"> <i class="fa fa-clock-o"></i>&nbsp;&nbsp;
+                                        {{ article.publication_date }} </a></div>
+                                <div class=""><a href="single.html" class="fh5co_good_font_2"> {{ article.title|slice:":62" }}... </a></div>
                             </div>
                         </div>
                     </div>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% for article in page_obj %}
+                    {# Check if this is the third object in the list (index 2) #}
+                    {% if forloop.counter0 == 2 %}
                     <div class="col-md-6 col-6 paddding animate-box" data-animate-effect="fadeIn">
-                        <div class="fh5co_suceefh5co_height_2"><img src="{% static 'images/joe-gardner-75333.jpg' %}"
-                                alt="img" />
+                        <div class="fh5co_suceefh5co_height_2"><img src="{{ article.image_url }}" alt="img" />
                             <div class="fh5co_suceefh5co_height_position_absolute"></div>
                             <div class="fh5co_suceefh5co_height_position_absolute_font_2">
-                                <div class=""><a href="#" class="color_fff"> <i
-                                            class="fa fa-clock-o"></i>&nbsp;&nbsp;Oct 28,2017 </a></div>
-                                <div class=""><a href="single.html" class="fh5co_good_font_2"> After all is said and
-                                        done... </a></div>
+                                <div class=""><a href="#" class="color_fff"> <i class="fa fa-clock-o"></i>&nbsp;&nbsp;
+                                        {{ article.publication_date }} </a></div>
+                                <div class=""><a href="single.html" class="fh5co_good_font_2"> {{ article.title|slice:":62" }}... </a></div>
                             </div>
                         </div>
                     </div>
+                    {# Add more fields as needed #}
+                    {% endif %}
+                    {% endfor %}
+
+
+                    {% for article in page_obj %}
+                    {# Check if this is the third object in the list (index 2) #}
+                    {% if forloop.counter0 == 3 %}
                     <div class="col-md-6 col-6 paddding animate-box" data-animate-effect="fadeIn">
-                        <div class="fh5co_suceefh5co_height_2"><img src="{% static 'images/ryan-moreno-98837.jpg' %}"
-                                alt="img" />
+                        <div class="fh5co_suceefh5co_height_2"><img src="{{ article.image_url }}" alt="img" />
                             <div class="fh5co_suceefh5co_height_position_absolute"></div>
                             <div class="fh5co_suceefh5co_height_position_absolute_font_2">
-                                <div class=""><a href="#" class="color_fff"> <i
-                                            class="fa fa-clock-o"></i>&nbsp;&nbsp;Oct
-                                        28,2017 </a></div>
-                                <div class=""><a href="single.html" class="fh5co_good_font_2"> After all is said and
-                                        done, more is said than done </a></div>
+                                <div class=""><a href="#" class="color_fff"> <i class="fa fa-clock-o"></i>&nbsp;&nbsp;
+                                        {{ article.publication_date }} </a></div>
+                                <div class=""><a href="single.html" class="fh5co_good_font_2"> 
+                                        {{ article.title|slice:":62" }}... </a></div>
                             </div>
                         </div>
                     </div>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% for article in page_obj %}
+                    {# Check if this is the third object in the list (index 2) #}
+                    {% if forloop.counter0 == 4 %}
                     <div class="col-md-6 col-6 paddding animate-box" data-animate-effect="fadeIn">
-                        <div class="fh5co_suceefh5co_height_2"><img src="{% static 'images/10-1-1-875x500.jpg' %} "
-                                alt="img" />
+                        <div class="fh5co_suceefh5co_height_2"><img src="{{ article.image_url }} " alt="img" />
                             <div class="fh5co_suceefh5co_height_position_absolute"></div>
                             <div class="fh5co_suceefh5co_height_position_absolute_font_2">
-                                <div class=""><a href="#" class="color_fff"> <i
-                                            class="fa fa-clock-o"></i>&nbsp;&nbsp;Oct
-                                        28,2017 </a></div>
-                                <div class=""><a href="single.html" class="fh5co_good_font_2"> After all is said and
-                                        done, more is said... </a></div>
+                                <div class=""><a href="#" class="color_fff"> <i class="fa fa-clock-o"></i>&nbsp;&nbsp;
+                                        {{ article.publication_date }} </a></div>
+                                <div class=""><a href="single.html" class="fh5co_good_font_2"> 
+                                       {{ article.title|slice:":62" }}... </a></div>
                             </div>
                         </div>
                     </div>
+                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -446,91 +465,43 @@
                     <div>
                         <div class="fh5co_heading fh5co_heading_border_bottom py-2 mb-4">News</div>
                     </div>
-                    <div class="row pb-4">
-                        <div class="col-md-5">
-                            <div class="fh5co_hover_news_img">
-                                <div class="fh5co_news_img"><img src="{% static 'images/nathan-mcbride-229637.jpg' %}"
-                                        alt="" /></div>
-                                <div></div>
-                            </div>
-                        </div>
-                        <div class="col-md-7 animate-box">
-                            <a href="single.html" class="fh5co_magna py-2"> Magna aliqua ut enim ad minim veniam quis
-                                nostrud quis xercitation ullamco. </a> <a href="single.html"
-                                class="fh5co_mini_time py-3"> Thomson Smith -
-                                April 18,2016 </a>
-                            <div class="fh5co_consectetur"> Amet consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt
-                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row pb-4">
-                        <div class="col-md-5">
-                            <div class="fh5co_hover_news_img">
-                                <div class="fh5co_news_img"><img src="{% static 'images/ryan-moreno-98837.jpg' %}"
-                                        alt="" /></div>
-                                <div></div>
-                            </div>
-                        </div>
-                        <div class="col-md-7">
-                            <a href="single.html" class="fh5co_magna py-2"> Magna aliqua ut enim ad minim veniam quis
-                                nostrud quis xercitation ullamco. </a> <a href="#" class="fh5co_mini_time py-3"> Thomson
-                                Smith -
-                                April 18,2016 </a>
-                            <div class="fh5co_consectetur"> Quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                                ea
-                                commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                                dolore.
-                            </div>
-                            <ul class="fh5co_gaming_topikk pt-3">
-                                <li> Why 2017 Might Just Be the Worst Year Ever for Gaming</li>
-                                <li> Ghost Racer Wants to Be the Most Ambitious Car Game</li>
-                                <li> New Nintendo Wii Console Goes on Sale in Strategy Reboot</li>
-                                <li> You and Your Kids can Enjoy this News Gaming Console</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row pb-4">
-                        <div class="col-md-5">
-                            <div class="fh5co_hover_news_img">
-                                <div class="fh5co_news_img">
-                                    <img src="{% static 'images/photo-1449157291145-7efd050a4d0e-578x362.jpg' %}"
-                                        alt="" />
+                    {% for article in page_obj %}
+                        <div class="row pb-4">
+                            <div class="col-md-5">
+                                <div class="fh5co_hover_news_img">
+                                    <div class="fh5co_news_img"><img src="{{ article.image_url }}" style="max-width: 100%; height: auto;"
+                                            alt="{% static 'images/nathan-mcbride-229637.jpg' %}" /></div>
+                                    <div></div>
                                 </div>
-                                <div></div>
+                            </div>
+                            <div class="col-md-7 animate-box">
+                                <a href="{{ article.article_link }}" class="fh5co_magna py-2"> {{ article.title }} </a> <a href="single.html"
+                                    class="fh5co_mini_time py-3"> {{ article.source.name }} -
+                                    April 18,2016 </a>
+                                <div class="fh5co_consectetur"> {{ article.content|slice:":200" }}
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-7">
-                            <a href="single.html" class="fh5co_magna py-2"> Magna aliqua ut enim ad minim veniam quis
-                                nostrud quis xercitation ullamco. </a> <a href="#" class="fh5co_mini_time py-3"> Thomson
-                                Smith -
-                                April 18,2016 </a>
-                            <div class="fh5co_consectetur"> Quis nostrud xercitation ullamco laboris nisi aliquip ex ea
-                                commodo
-                                consequat.
-                            </div>
-                        </div>
+                    {% endfor %}
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                            {% endif %}
+                    
+                            <span class="current-page">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+                    
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
                     </div>
-                    <div class="row pb-4">
-                        <div class="col-md-5">
-                            <div class="fh5co_hover_news_img">
-                                <div class="fh5co_news_img"><img src="{% static 'images/office-768x512.jpg' %}"
-                                        alt="" /></div>
-                                <div></div>
-                            </div>
-                        </div>
-                        <div class="col-md-7">
-                            <a href="single.html" class="fh5co_magna py-2"> Magna aliqua ut enim ad minim veniam quis
-                                nostrud quis xercitation ullamco. </a> <a href="#" class="fh5co_mini_time py-3"> Thomson
-                                Smith -
-                                April 18,2016 </a>
-                            <div class="fh5co_consectetur"> Amet consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt
-                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-                            </div>
-                        </div>
-                    </div>
+                    
+                    
                 </div>
                 <div class="col-md-3 animate-box" data-animate-effect="fadeInRight">
                     <div>
