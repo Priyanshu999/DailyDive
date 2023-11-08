@@ -60,3 +60,7 @@ class HomeView(ListView):
         sorted_articles = NewsArticle.objects.filter(publication_date__date__in=publication_date_dates).order_by('-publication_date')
         return sorted_articles
     
+
+
+class NewsDetailView(TemplateView):
+    template_name='news_detail.html'
