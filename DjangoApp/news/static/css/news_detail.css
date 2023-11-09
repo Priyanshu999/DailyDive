@@ -21,12 +21,12 @@ article {
 	font-family: 'Open Sans', sans-serif;
 }
 h1 {
-	font-family: 'Alfa Slab One', cursive;
-	text-align: center;
-	letter-spacing: 1.5px;
+	font-family: 'Alfa Slab One', cursive !important;
+	text-align: center !important;
+	letter-spacing: 1.5px !important;
 }
 .h1-divider {
-	background-color: #252525;
+	
 	margin-bottom: 37px;
 }
 article h3 {
@@ -65,7 +65,47 @@ section p {
 	object-fit: cover;
 }
 
+body {
+    /* background-color: #eee !important; */
+    
+}
 
+.comment_section{
+	margin-top: 20% !important;
+}
+
+.bdge {
+  height: 21px;
+  background-color: orange;
+  color: #fff;
+  font-size: 11px;
+  padding: 8px;
+  border-radius: 4px;
+  line-height: 3px;
+}
+
+.comments {
+  text-decoration: underline;
+  text-underline-position: under;
+  cursor: pointer;
+}
+
+.dot {
+  height: 7px;
+  width: 7px;
+  margin-top: 3px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.hit-voting:hover {
+  color: blue;
+}
+
+.hit-voting {
+  cursor: pointer;
+}
 /*--------------------------
 
      Media Queries 
@@ -173,13 +213,28 @@ section p {
 @media only screen and (min-width: 1140px) {
     /* 1140 */
 	section {
+		margin-top: 30px;
 		width: 1035px;
 	}
 	h1 {
-		font-size: 72px;
-		line-height: 0.98;
+		font-size: 65px !important;
+		line-height: 1 !important;
+		margin-bottom: 30px !important;
 	}
-	.h1-divider {
+
+	.divider-parent{
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+
+	.h1-divider{
+		background-color: #252525;
+		width: 530px;
+		
+	}
+	
+	.h1-divider div{
 		width: 480px;
 		margin-bottom: 45px;
 	}
