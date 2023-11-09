@@ -1,10 +1,10 @@
 from django.views.generic.edit import FormView
 from .forms import CustomSignupForm, NewCommentForm
-from django.views.generic import TemplateView, ListView, DetailView
-from django.db.models import F, Subquery, Window, Count, Max
+from django.views.generic import ListView, DetailView
+from django.db.models import Count
 from django.contrib.auth import login
-from django.db.models.functions import Rank, DenseRank, TruncDate
-from .models import NewsArticle, ArticleComment
+from django.db.models.functions import TruncDate
+from .models import NewsArticle, ArticleComment, NewsSource
 # from verify_email.email_handler import send_verification_email
 # from django.shortcuts import render, re
 # from django.views import View
@@ -112,3 +112,27 @@ class NewsDetailView(DetailView):
                                   article=self.get_object())
         new_comment.save()
         return self.get(self, request, *args, **kwargs)
+    
+
+class SourceNewsView(ListView):
+    model = NewsArticle
+    template_name = 'source_news.html'
+    context_object_name = 'articles'
+    paginate_by = 20
+    substrings_to_remove = ["%2520", "%20"]
+
+    def get_queryset(self):
+        source_name = self.kwargs['source_name']
+        print(source_name)
+        source_name = self.remove_substrings(source_name, self.substrings_to_remove)
+        # Get the source based on the name
+        source = NewsSource.objects.get(name=source_name)
+        # Get articles from the specific source
+        articles = NewsArticle.objects.filter(source=source)
+        return articles
+    
+    def remove_substrings(self, main_string, substrings_to_remove):
+        for substring in substrings_to_remove:
+            main_string = main_string.replace(substring, ' ')
+        return main_string
+    
