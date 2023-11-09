@@ -17,6 +17,10 @@ class NewsArticle(models.Model):
     source = models.ForeignKey(NewsSource, on_delete=models.CASCADE)
     publication_date = models.DateTimeField()
 
+    @property
+    def number_of_comments(self):
+        return ArticleComment.objects.filter(article=self).count()
+
     def __str__(self):
         return self.title
 
@@ -39,9 +43,14 @@ class ArticleLike(models.Model):
 
 class ArticleComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    upvotes = models.IntegerField(default=0)
+    downvotes = models.IntegerField(default=0)
     article = models.ForeignKey(NewsArticle, on_delete=models.CASCADE)
     content = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now)
+    @property
+    def number_of_likes(self):
+        return self.upvotes+self.downvotes
     # hello = models.CharField(max_length=1, null=True)
 
     def __str__(self):

@@ -1,10 +1,10 @@
 from django.views.generic.edit import FormView
-from .forms import CustomSignupForm
+from .forms import CustomSignupForm, NewCommentForm
 from django.views.generic import TemplateView, ListView, DetailView
 from django.db.models import F, Subquery, Window, Count, Max
 from django.contrib.auth import login
 from django.db.models.functions import Rank, DenseRank, TruncDate
-from .models import NewsArticle
+from .models import NewsArticle, ArticleComment
 # from verify_email.email_handler import send_verification_email
 # from django.shortcuts import render, re
 # from django.views import View
@@ -86,6 +86,9 @@ class NewsDetailView(DetailView):
         second_half = remaining_content[half_length:]
         first_half_content = ".".join(first_half) + "."
         second_half_content = ".".join(second_half) + "."
+        
+        comments_connected = ArticleComment.objects.filter(
+            article=self.get_object()).order_by('-timestamp')
 
         # Create a custom context dictionary
         custom_context = {
@@ -95,5 +98,17 @@ class NewsDetailView(DetailView):
             'second_half_content': second_half_content,
         }
 
+        custom_context['comments'] = comments_connected
+        if self.request.user.is_authenticated:
+            custom_context['comment_form'] = NewCommentForm(instance=self.request.user)
+
         context.update(custom_context)
         return context
+    
+
+    def post(self, request, *args, **kwargs):
+        new_comment = ArticleComment(content=request.POST.get('content'),
+                                  user=self.request.user,
+                                  article=self.get_object())
+        new_comment.save()
+        return self.get(self, request, *args, **kwargs)

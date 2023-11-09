@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import ArticleComment
 
 class CustomSignupForm(UserCreationForm):
     username = forms.CharField(
@@ -22,3 +23,12 @@ class CustomSignupForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
+
+
+class NewCommentForm(forms.ModelForm):
+    content = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control mr-3', 'placeholder': 'Add comment'}),
+    )
+    class Meta:
+        model = ArticleComment
+        fields = ['content']
