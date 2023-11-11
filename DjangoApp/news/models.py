@@ -50,7 +50,7 @@ class ArticleComment(models.Model):
     timestamp = models.DateTimeField(default=timezone.now)
     @property
     def number_of_likes(self):
-        return self.upvotes+self.downvotes
+        return self.upvotes-self.downvotes
     # hello = models.CharField(max_length=1, null=True)
 
     def __str__(self):

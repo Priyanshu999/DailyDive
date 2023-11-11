@@ -5,6 +5,7 @@ from django.db.models import Count
 from django.contrib.auth import login
 from django.db.models.functions import TruncDate
 from .models import NewsArticle, ArticleComment, NewsSource
+from django.http import JsonResponse
 # from verify_email.email_handler import send_verification_email
 # from django.shortcuts import render, re
 # from django.views import View
@@ -136,3 +137,17 @@ class SourceNewsView(ListView):
             main_string = main_string.replace(substring, ' ')
         return main_string
     
+
+def upvote_comment(request, pk, comment_id):
+    comment = ArticleComment.objects.get(pk=comment_id)
+    comment.upvotes += 1
+    print("upvoted")
+    comment.save()
+    return JsonResponse({'upvotes': comment.upvotes})
+
+
+def downvote_comment(request, pk, comment_id):
+    comment = ArticleComment.objects.get(pk=comment_id)
+    comment.downvotes += 1
+    comment.save()
+    return JsonResponse({'downvotes': comment.downvotes})
