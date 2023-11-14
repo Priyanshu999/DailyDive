@@ -1,6 +1,6 @@
 from django.views.generic.edit import FormView
 from .forms import CustomSignupForm, NewCommentForm
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from django.db.models import Count
 from django.contrib.auth import login
 from django.db.models.functions import TruncDate
@@ -137,6 +137,11 @@ class SourceNewsView(ListView):
             main_string = main_string.replace(substring, ' ')
         return main_string
     
+
+class UserProfileView(TemplateView):
+    template_name = 'user_profile.html'
+
+
 
 def upvote_comment(request, pk, comment_id):
     comment = ArticleComment.objects.get(pk=comment_id)
