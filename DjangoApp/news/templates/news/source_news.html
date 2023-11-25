@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Source News</title>
     <link href="{% static 'css/media_query.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
@@ -50,12 +50,16 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton3" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">Community<span
+                                aria-haspopup="true" aria-expanded="false">Profile<span
                                     class="sr-only">(current)</span></a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink_1">
-                                <a class="dropdown-item" href="#">Action in</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
+                                {% if user.is_authenticated %}
+                                <a class="dropdown-item" href="">Your Profile</a>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Signout</a>
+                                {% else %}
+                                <a class="dropdown-item" href="{% url 'login' %}">Signin</a>
+                                <a class="dropdown-item" href="{% url 'signup' %}">Signup</a> 
+                                {% endif %}     
                             </div>
                         </li>
                         <li class="nav-item ">
@@ -80,7 +84,7 @@
                             <div class="col-md-5">
                                 <div class="fh5co_hover_news_img">
                                     <div class="fh5co_news_img"><img src="{{ article.image_url }}" style="max-width: 100%; height: auto;"
-                                            alt="{% static 'images/nathan-mcbride-229637.jpg' %}" /></div>
+                                            alt="Some news" onerror="fallbackImage(this)" /></div>
                                     <div></div>
                                 </div>
                             </div>
@@ -307,6 +311,12 @@
     <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
     <!-- Main -->
     <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        function fallbackImage(img) {
+            img.src = "{% static 'images/newsalt.jpg' %}";
+            img.alt = "Description of the alternate image";
+        }
+    </script>
 
 </body>
 </html>

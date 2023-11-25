@@ -6,7 +6,7 @@ from django.contrib.auth import login
 from django.db.models.functions import TruncDate
 from .models import NewsArticle, ArticleComment, NewsSource
 from django.http import JsonResponse
-# from verify_email.email_handler import send_verification_email
+from verify_email.email_handler import send_verification_email
 # from django.shortcuts import render, re
 # from django.views import View
 # from django.contrib.auth.models import User
@@ -17,9 +17,9 @@ class SignupView(FormView):
     success_url = '/'  # Provide the URL name for the 'home' view
 
     def form_valid(self, form):
-        # send_verification_email(self.request, form)
-        # user = form.instance
-        user = form.save()
+        send_verification_email(self.request, form)
+        user = form.instance
+        # user = form.save()
         login(self.request, user)  # Log the user in
         return super().form_valid(form)
     
@@ -118,7 +118,6 @@ class NewsDetailView(DetailView):
 class SourceNewsView(ListView):
     model = NewsArticle
     template_name = 'source_news.html'
-    context_object_name = 'articles'
     paginate_by = 20
     substrings_to_remove = ["%2520", "%20"]
 
@@ -142,6 +141,10 @@ class UserProfileView(TemplateView):
     template_name = 'user_profile.html'
 
 
+class TnCview(TemplateView):
+    template_name = 'tnc.html'
+
+
 
 def upvote_comment(request, pk, comment_id):
     comment = ArticleComment.objects.get(pk=comment_id)
@@ -156,3 +159,5 @@ def downvote_comment(request, pk, comment_id):
     comment.downvotes += 1
     comment.save()
     return JsonResponse({'downvotes': comment.downvotes})
+
+

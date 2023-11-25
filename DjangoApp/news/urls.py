@@ -9,4 +9,5 @@ urlpatterns = [
     path('news/<int:pk>/upvote/<int:comment_id>/', views.upvote_comment, name='upvote_comment'),
     path('news/<int:pk>/downvote/<int:comment_id>/', views.downvote_comment, name='downvote_comment'),
     path('profile/', views.UserProfileView.as_view(), name='user_profile'),
+    path('signup/tnc/', views.TnCview.as_view(), name='tnc'),
 ]
