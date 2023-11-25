@@ -1,6 +1,8 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.views.generic.edit import FormView
-from .forms import CustomSignupForm, NewCommentForm
-from django.views.generic import ListView, DetailView, TemplateView
+from .forms import CustomSignupForm, NewCommentForm, UserProfileForm
+from django.views.generic import ListView, DetailView, TemplateView, UpdateView
 from django.db.models import Count
 from django.contrib.auth import login
 from django.db.models.functions import TruncDate
@@ -11,8 +13,8 @@ from verify_email.email_handler import send_verification_email
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.shortcuts import get_object_or_404
-from django.urls import reverse
-# from django.shortcuts import render, re
+from django.urls import reverse, reverse_lazy
+from django.shortcuts import render, redirect
 # from django.views import View
 # from django.contrib.auth.models import User
 
@@ -142,8 +144,19 @@ class SourceNewsView(ListView):
         return main_string
     
 
-class UserProfileView(TemplateView, LoginRequiredMixin):
+class UserProfileView(LoginRequiredMixin, UpdateView):
+    model = UserProfile
+    form_class = UserProfileForm
     template_name = 'user_profile.html'
+    success_url = reverse_lazy('user_profile')  # Adjust 'profile' to the name of your user profile URL
+
+    def get_object(self, queryset=None):
+        # Get the UserProfile instance for the current user
+        return UserProfile.objects.get_or_create(user=self.request.user)[0]
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class TnCview(TemplateView):
@@ -171,6 +184,15 @@ class ToggleBookmarkView(LoginRequiredMixin, View):
 
         # Redirect back to the news detail page
         return HttpResponseRedirect(reverse('news_detail', args=[pk]))
+    
+
+class BookMarkView(LoginRequiredMixin, ListView):
+    model = NewsArticle
+    template_name = 'bookmarks.html'
+    paginate_by = 20
+
+    def get_queryset(self):
+        return self.request.user.usert.saved_articles.all()
 
 
 @login_required

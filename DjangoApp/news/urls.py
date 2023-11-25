@@ -9,6 +9,7 @@ urlpatterns = [
     path('news/upvote/<int:comment_id>/', views.upvote_comment, name='upvote_comment'),
     path('news/downvote/<int:comment_id>/', views.downvote_comment, name='downvote_comment'),
     path('news/<int:pk>/bookmark/', views.ToggleBookmarkView.as_view(), name='toggle_bookmark'),
+    path('bookmarks/', views.BookMarkView.as_view(), name='bookmarks'),
     path('profile/', views.UserProfileView.as_view(), name='user_profile'),
     path('signup/tnc/', views.TnCview.as_view(), name='tnc'),
 ]
