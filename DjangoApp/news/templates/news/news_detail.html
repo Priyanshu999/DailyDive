@@ -10,10 +10,16 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 
-    <title>Document</title>
+    <title>{{ article.title }} </title>
 </head>
 
 <body>
@@ -53,6 +59,19 @@
                             <div class="d-flex flex-row post-title">
                                 <h5>Share your thoughts and opinions</h5><span class="ml-2">
                                     {{ article.source.name}}</span>
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'toggle_bookmark' article.id %}">
+                                        {% if article in user.userprofile.saved_articles.all %}
+                                        <span class="material-symbols-outlined">
+                                            bookmark_remove
+                                        </span>
+                                        {% else %}
+                                        <span class="material-symbols-outlined">
+                                            bookmark_add
+                                        </span>
+                                        {% endif %}
+                                    </a>
+                                {% endif %}
                             </div>
                             <div class="d-flex flex-row align-items-center align-content-center post-title"><span
                                     class="bdge mr-1">video</span><span class="mr-2 comments">
@@ -78,28 +97,35 @@
                         </div>
                         {% if comments %}
                         {% for comment in comments %}
-                            <div class="commented-section mt-2">
-                                <div class="d-flex flex-row align-items-center commented-user">
-                                    <h5 class="mr-2">{{ comment.user.username }}</h5> 
-                                    <span class="dot mb-1"></span> 
-                                    <span class="mb-1 ml-2">{{ comment.timestamp }}</span>
-                                </div>
-                                <div class="comment-text-sm"><span>{{ comment.content }}</span></div>
-                                <div class="reply-section">
-                                    <div class="d-flex flex-row align-items-center voting-icons">
-                                        <a href="" class="upbtn" onclick="return false;" data-a-id="{{ comment.id }}"><i class="fa fa-sort-up fa-2x mt-3 hit-voting upvote-btn mytarget" data-comment-id="{{ comment.id }}">
+                        <div class="commented-section mt-2">
+                            <div class="d-flex flex-row align-items-center commented-user">
+                                <h5 class="mr-2">{{ comment.user.username }}</h5>
+                                <span class="dot mb-1"></span>
+                                <span class="mb-1 ml-2">{{ comment.timestamp }}</span>
+                            </div>
+                            <div class="comment-text-sm"><span>{{ comment.content }}</span></div>
+                            <div class="reply-section">
+                                <div class="d-flex flex-row align-items-center voting-icons">
+                                    <a href="" class="upbtn" onclick="return false;" data-a-id="{{ comment.id }}"
+                                        style="color: #4681f4;"><i
+                                            class="fa fa-sort-up fa-2x mt-3 hit-voting upvote-btn mytarget"
+                                            data-comment-id="{{ comment.id }}">
                                         </i></a>
-                                        <a href="" class="dvbtn" onclick="return false;" style="color: black;" data-a-id="{{ comment.id }}"><i class="fa fa-sort-down fa-2x mb-3 hit-voting downvote-btn mytarget" data-comment-id="{{ comment.id }}">
+                                    <a href="" class="dvbtn" onclick="return false;" style="color: black;"
+                                        data-a-id="{{ comment.id }}"><i
+                                            class="fa fa-sort-down fa-2x mb-3 hit-voting downvote-btn mytarget"
+                                            data-comment-id="{{ comment.id }}">
                                         </i></a>
-                                        <span class="ml-2 upvote-count" data-commenting-id="{{ comment.id }}" data-upvotes="{{ comment.upvotes }}" data-downvotes="{{ comment.downvotes }}">
-                                            {{ comment.number_of_likes }}
-                                        </span>
-                                        <span class="dot ml-2"></span>
-                                        <h6 class="ml-2 mt-1">Reply</h6>
-                                    </div>
+                                    <span class="ml-2 upvote-count" data-commenting-id="{{ comment.id }}"
+                                        data-upvotes="{{ comment.upvotes }}" data-downvotes="{{ comment.downvotes }}">
+                                        {{ comment.number_of_likes }}
+                                    </span>
+                                    <span class="dot ml-2"></span>
+                                    <h6 class="ml-2 mt-1">Reply</h6>
                                 </div>
                             </div>
-                            
+                        </div>
+
                         {% endfor %}
                         {% endif %}
                     </div>
@@ -108,60 +134,60 @@
         </div>
     </div>
     <script>
-        
+
     </script>
-    
-    
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $(".upvote-btn, .downvote-btn").click(function () {
-            var commentId = $(this).data("comment-id");
-            var voteType = $(this).hasClass("upvote-btn") ? "upvote" : "downvote";
+    <script>
+        $(document).ready(function () {
+            $(".upvote-btn, .downvote-btn").click(function () {
+                var commentId = $(this).data("comment-id");
+                var voteType = $(this).hasClass("upvote-btn") ? "upvote" : "downvote";
 
-            // Disable the buttons temporarily
-            $(".upvote-btn, .downvote-btn").prop("disabled", true);
+                // Disable the buttons temporarily
+                $(".upvote-btn, .downvote-btn").prop("disabled", true);
 
-            var csrftoken = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
+                var csrftoken = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
 
-            var clickedButton = $(this);
+                var clickedButton = $(this);
 
-            $.ajax({
-                type: "POST",
-                url: `${voteType}/${commentId}/`,
-                headers: { "X-CSRFToken": csrftoken },
-                success: function (data) {
-                    console.log("success")
-                    // Update the displayed upvotes or downvotes count
-                    // $(".upvote-count, .downvote-count").text(data[voteType + 's']);
-                    $(`[data-commenting-id=${commentId}]`).text(data[voteType + 's']);
-                    if (voteType === "upvote") {
-                        clickedButton.css("color", "gray");
-                        clickedButton.css("display", "none");
-                        
-                    } else if (voteType === "downvote") {
-                        clickedButton.css("color", "gray");
-                        clickedButton.css("display", "none");
+                $.ajax({
+                    type: "POST",
+                    url: `${voteType}/${commentId}/`,
+                    headers: { "X-CSRFToken": csrftoken },
+                    success: function (data) {
+                        console.log("success")
+                        // Update the displayed upvotes or downvotes count
+                        // $(".upvote-count, .downvote-count").text(data[voteType + 's']);
+                        $(`[data-commenting-id=${commentId}]`).text(data[voteType + 's']);
+                        if (voteType === "upvote") {
+                            clickedButton.css("color", "gray");
+                            clickedButton.css("display", "none");
+
+                        } else if (voteType === "downvote") {
+                            clickedButton.css("color", "gray");
+                            clickedButton.css("display", "none");
+                        }
+                    },
+                    complete: function () {
+                        // Enable the buttons after the AJAX request is completed
+                        $(".upvote-btn, .downvote-btn").prop("disabled", false);
                     }
-                },
-                complete: function () {
-                    // Enable the buttons after the AJAX request is completed
-                    $(".upvote-btn, .downvote-btn").prop("disabled", false);
-                }
+                });
+
+                // // Send an AJAX request to the corresponding view
+                // $.post(`/news/{{ article.id }}/${voteType}/${commentId}/`, function (data) {
+                //     // Update the displayed upvotes or downvotes count
+                //     $(".upvote-count, .downvote-count").text(data[voteType + 's']);
+
+                //     // Enable the buttons after the AJAX request is completed
+                //     $(".upvote-btn, .downvote-btn").prop("disabled", false);
+                // });
             });
-
-            // // Send an AJAX request to the corresponding view
-            // $.post(`/news/{{ article.id }}/${voteType}/${commentId}/`, function (data) {
-            //     // Update the displayed upvotes or downvotes count
-            //     $(".upvote-count, .downvote-count").text(data[voteType + 's']);
-
-            //     // Enable the buttons after the AJAX request is completed
-            //     $(".upvote-btn, .downvote-btn").prop("disabled", false);
-            // });
         });
-    });
-</script>
+    </script>
 </body>
 
 </html>

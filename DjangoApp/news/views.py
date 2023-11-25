@@ -4,10 +4,14 @@ from django.views.generic import ListView, DetailView, TemplateView
 from django.db.models import Count
 from django.contrib.auth import login
 from django.db.models.functions import TruncDate
-from .models import NewsArticle, ArticleComment, NewsSource
-from django.http import JsonResponse
+from .models import NewsArticle, ArticleComment, NewsSource, UserProfile
+from django.http import JsonResponse, HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from verify_email.email_handler import send_verification_email
 from django.contrib.auth.decorators import login_required
+from django.views import View
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
 # from django.shortcuts import render, re
 # from django.views import View
 # from django.contrib.auth.models import User
@@ -138,12 +142,35 @@ class SourceNewsView(ListView):
         return main_string
     
 
-class UserProfileView(TemplateView):
+class UserProfileView(TemplateView, LoginRequiredMixin):
     template_name = 'user_profile.html'
 
 
 class TnCview(TemplateView):
     template_name = 'tnc.html'
+
+
+class ToggleBookmarkView(LoginRequiredMixin, View):
+    def get(self, request, pk, *args, **kwargs):
+        article = get_object_or_404(NewsArticle, pk=pk)
+        user_profile, create = UserProfile.objects.get_or_create(user=request.user)
+        print("Hello")
+        print(user_profile.saved_articles.all())
+
+        if article in user_profile.saved_articles.all():
+            print("removing")
+            user_profile.saved_articles.remove(article)
+            print(len(user_profile.saved_articles.all()))
+            print(user_profile.saved_articles.all())
+
+        else:
+            user_profile.saved_articles.add(article)
+            print("adding")
+            print(len(user_profile.saved_articles.all()))
+            print(user_profile.saved_articles.all())
+
+        # Redirect back to the news detail page
+        return HttpResponseRedirect(reverse('news_detail', args=[pk]))
 
 
 @login_required

@@ -26,7 +26,7 @@ class NewsArticle(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    saved_articles = models.ManyToManyField(NewsArticle, related_name='saved_by', blank=True)
+    saved_articles = models.ManyToManyField(NewsArticle, related_name='saved_by', null=True)
     profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
 
     def __str__(self):
