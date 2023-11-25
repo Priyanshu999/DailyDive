@@ -44,15 +44,20 @@ class ArticleLike(models.Model):
 
 class ArticleComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    upvotes = models.IntegerField(default=0)
-    downvotes = models.IntegerField(default=0)
-    article = models.ForeignKey(NewsArticle, on_delete=models.CASCADE)
+    article = models.ForeignKey(NewsArticle, on_delete=models.CASCADE, null=True)
     content = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now)
+    upvotes = models.ManyToManyField(User, related_name='comment_upvotes', blank=True)
+    downvotes = models.ManyToManyField(User, related_name='comment_downvotes', blank=True)
+
     @property
     def number_of_likes(self):
-        return self.upvotes-self.downvotes
-    # hello = models.CharField(max_length=1, null=True)
+        return self.upvotes.count() - self.downvotes.count()
 
     def __str__(self):
-        return f"Comment by {self.user.username} on {self.article.title}"
+        if self.article:
+            return f"Comment by {self.user.username} on {self.article.title}"
+        else:
+            return "A comment"
+
+

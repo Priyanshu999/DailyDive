@@ -87,11 +87,11 @@
                                 <div class="comment-text-sm"><span>{{ comment.content }}</span></div>
                                 <div class="reply-section">
                                     <div class="d-flex flex-row align-items-center voting-icons">
-                                        <i class="fa fa-sort-up fa-2x mt-3 hit-voting upvote-btn mytarget" data-comment-id="{{ comment.id }}">
-                                        </i>
-                                        <i class="fa fa-sort-down fa-2x mb-3 hit-voting downvote-btn mytarget" data-comment-id="{{ comment.id }}">
-                                        </i>
-                                        <span class="ml-2 upvote-count" data-upvotes="{{ comment.upvotes }}" data-downvotes="{{ comment.downvotes }}">
+                                        <a href="" class="upbtn" onclick="return false;" data-a-id="{{ comment.id }}"><i class="fa fa-sort-up fa-2x mt-3 hit-voting upvote-btn mytarget" data-comment-id="{{ comment.id }}">
+                                        </i></a>
+                                        <a href="" class="dvbtn" onclick="return false;" style="color: black;" data-a-id="{{ comment.id }}"><i class="fa fa-sort-down fa-2x mb-3 hit-voting downvote-btn mytarget" data-comment-id="{{ comment.id }}">
+                                        </i></a>
+                                        <span class="ml-2 upvote-count" data-commenting-id="{{ comment.id }}" data-upvotes="{{ comment.upvotes }}" data-downvotes="{{ comment.downvotes }}">
                                             {{ comment.number_of_likes }}
                                         </span>
                                         <span class="dot ml-2"></span>
@@ -99,6 +99,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                         {% endfor %}
                         {% endif %}
                     </div>
@@ -107,48 +108,60 @@
         </div>
     </div>
     <script>
-        $(document).ready(function () {
-            // Set up CSRF token for AJAX requests
-            var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    
-            $(".upvote-btn").click(function () {
-                var commentId = $(this).data("comment-id");
-
-                // Include the CSRF token in the AJAX request
-                $.ajax({
-                    type: "POST",
-                    url: `/news/${ {{ article.id }} }/upvote/${commentId}/`,
-                    headers: {
-                        "X-CSRFToken": csrftoken
-                    },
-                    success: function (data) {
-                        // Update the displayed upvotes count for the specific comment
-                        $(`.upvote-count[data-comment-id="${commentId}"]`).text(data.number_of_likes);
-                    }
-                });
-            });
-
-            $(".downvote-btn").click(function () {
-                var commentId = $(this).data("comment-id");
-
-                // Include the CSRF token in the AJAX request
-                $.ajax({
-                    type: "POST",
-                    url: `/news/${ {{ article.id }} }/downvote/${commentId}/`,
-                    headers: {
-                        "X-CSRFToken": csrftoken
-                    },
-                    success: function (data) {
-                        // Update the displayed downvotes count for the specific comment
-                        $(`.upvote-count[data-comment-id="${commentId}"]`).text(data.number_of_likes);
-                    }
-                });
-            });
-        });
+        
     </script>
     
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".upvote-btn, .downvote-btn").click(function () {
+            var commentId = $(this).data("comment-id");
+            var voteType = $(this).hasClass("upvote-btn") ? "upvote" : "downvote";
+
+            // Disable the buttons temporarily
+            $(".upvote-btn, .downvote-btn").prop("disabled", true);
+
+            var csrftoken = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
+
+            var clickedButton = $(this);
+
+            $.ajax({
+                type: "POST",
+                url: `${voteType}/${commentId}/`,
+                headers: { "X-CSRFToken": csrftoken },
+                success: function (data) {
+                    console.log("success")
+                    // Update the displayed upvotes or downvotes count
+                    // $(".upvote-count, .downvote-count").text(data[voteType + 's']);
+                    $(`[data-commenting-id=${commentId}]`).text(data[voteType + 's']);
+                    if (voteType === "upvote") {
+                        clickedButton.css("color", "gray");
+                        clickedButton.css("display", "none");
+                        
+                    } else if (voteType === "downvote") {
+                        clickedButton.css("color", "gray");
+                        clickedButton.css("display", "none");
+                    }
+                },
+                complete: function () {
+                    // Enable the buttons after the AJAX request is completed
+                    $(".upvote-btn, .downvote-btn").prop("disabled", false);
+                }
+            });
+
+            // // Send an AJAX request to the corresponding view
+            // $.post(`/news/{{ article.id }}/${voteType}/${commentId}/`, function (data) {
+            //     // Update the displayed upvotes or downvotes count
+            //     $(".upvote-count, .downvote-count").text(data[voteType + 's']);
+
+            //     // Enable the buttons after the AJAX request is completed
+            //     $(".upvote-btn, .downvote-btn").prop("disabled", false);
+            // });
+        });
+    });
+</script>
 </body>
 
 </html>

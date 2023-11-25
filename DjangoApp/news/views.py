@@ -7,6 +7,7 @@ from django.db.models.functions import TruncDate
 from .models import NewsArticle, ArticleComment, NewsSource
 from django.http import JsonResponse
 from verify_email.email_handler import send_verification_email
+from django.contrib.auth.decorators import login_required
 # from django.shortcuts import render, re
 # from django.views import View
 # from django.contrib.auth.models import User
@@ -145,19 +146,28 @@ class TnCview(TemplateView):
     template_name = 'tnc.html'
 
 
-
-def upvote_comment(request, pk, comment_id):
+@login_required
+def upvote_comment(request, comment_id):
     comment = ArticleComment.objects.get(pk=comment_id)
-    comment.upvotes += 1
-    print("upvoted")
-    comment.save()
-    return JsonResponse({'upvotes': comment.upvotes})
+
+    # Check if the user has already upvoted
+    print("Hello {} upvoted".format(request.user))
+    if request.user not in comment.upvotes.all():
+        comment.upvotes.add(request.user)
+        comment.downvotes.remove(request.user)
+
+    return JsonResponse({'upvotes': comment.number_of_likes})
 
 
-def downvote_comment(request, pk, comment_id):
+@login_required
+def downvote_comment(request, comment_id):
     comment = ArticleComment.objects.get(pk=comment_id)
-    comment.downvotes += 1
-    comment.save()
-    return JsonResponse({'downvotes': comment.downvotes})
+
+    # Check if the user has already downvoted
+    if request.user not in comment.downvotes.all():
+        comment.downvotes.add(request.user)
+        comment.upvotes.remove(request.user)
+
+    return JsonResponse({'downvotes': comment.number_of_likes})
 
 
