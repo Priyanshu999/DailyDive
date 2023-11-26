@@ -193,6 +193,10 @@ class BookMarkView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return self.request.user.usert.saved_articles.all()
+    
+
+class ContactUsView(TemplateView):
+    template_name='Contact_us.html'
 
 
 @login_required

@@ -11,5 +11,6 @@ urlpatterns = [
     path('news/<int:pk>/bookmark/', views.ToggleBookmarkView.as_view(), name='toggle_bookmark'),
     path('bookmarks/', views.BookMarkView.as_view(), name='bookmarks'),
     path('profile/', views.UserProfileView.as_view(), name='user_profile'),
+    path('contact/', views.ContactUsView.as_view(), name='contact'),
     path('signup/tnc/', views.TnCview.as_view(), name='tnc'),
 ]

@@ -32,16 +32,6 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
-class ArticleLike(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    article = models.ForeignKey(NewsArticle, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('user', 'article')
-
-    def __str__(self):
-        return f"{self.user.username} likes {self.article.title}"
-
 class ArticleComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     article = models.ForeignKey(NewsArticle, on_delete=models.CASCADE, null=True)
